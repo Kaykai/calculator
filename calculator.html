@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <title>calculator</title>
+</head>
+
+<body>
+    <div id="calculator">
+        <div id="title">
+            <br>
+            <p>My Calculator</p>
+            <br>
+        </div>
+        <input type="text" name="text"><br>
+        <table>
+            <tbody>
+                <tr>
+                    <td><button type="button" name="num" value="7" class="btn">7</button></td>
+                    <td><button type="button" name="num" value="8" class="btn">8</button></td>
+                    <td><button type="button" name="num" value="9" class="btn">9</button></td>
+                    <td><button type="button" name="add" class="operator btn" value="+">+</button></td>
+                </tr>
+                <tr>
+                    <td><button type="button" name="num" value="4" class="btn">4</button></td>
+                    <td><button type="button" name="num" value="5" class="btn">5</button></td>
+                    <td><button type="button" name="num" value="6" class="btn">6</button></td>
+                    <td><button type="button" name="less" class="operator btn" value="-">-</button></td>
+                </tr>
+                <tr>
+                    <td><button type="button" name="num" value="1" class="btn">1</button></td>
+                    <td><button type="button" name="num" value="2" class="btn">2</button></td>
+                    <td><button type="button" name="num" value="3" class="btn">3</button></td>
+                    <td><button type="button" name="mul" class="operator btn" value="*">*</button></td>
+                </tr>
+                <tr>
+                    <td><button type="button" name="clear" class="btn">C</button></td>
+                    <td><button type="button" name="num" value="0" class="btn">0</button></td>
+                    <td><button type="button" name="num" value="." class="btn">.</button></td>
+                    <td><button type="button" name="dev" class="operator btn" value="/">/</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody>
+                <tr>
+                    <td><button type="button" name="clear" class="btn" style="width:200px;">AC</button></td>
+                    <td><button type="button" name="back" class="btn"><img src="assets/backspace.ico" style="height: 25px"></button></td>
+                    <td><button type="button" name="equal" class="btn" value="=">=</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="changecolor">
+        <form>
+            <input type="radio" name="backgroundcolor" class="Green" checked> Green
+            <input type="radio" name="backgroundcolor" class="Blue"> Blue
+        </form>
+    </div>
+</body>
+
+</html>
+<script>
+    $('input[type="radio"]').change(function() {
+        if ($('.Green').is(':checked')) {
+            $('body').css("background-color", "gray");
+            $('#calculator').css("background-color", "greenyellow");
+        }
+        if ($('.Blue').is(':checked')) {
+            $('body').css("background-color", "white");
+            $('#calculator').css("background-color", "rgb(118, 118, 230)");
+        }
+    });
+
+    $(Document).ready(function() {
+        $('input').val("0");
+    });
+
+    var calLength = 0;
+    var calStr;
+    var operatorCount = 0;
+    var arr = new Array();
+    var opertor;
+    var count = 0;
+    var calSum = 0;
+    var checkdot = false;
+    var checkoperator = false;
+
+    function addCalLength() {
+        calStr = $('input').val();
+        calLength = calStr.length;
+    };
+
+    function calculator() {
+        arr = [];
+        calSum = 0;
+        checkdot = false;
+        var dotCount = 0;
+        for (var i = 0; i < calLength; i++) {
+            switch ($('input').val().substr(i, 1)) {
+                case '+':
+                case '-':
+                case '*':
+                case '/':
+                    arr.push(calSum);
+                    opertor = ($('input').val().substr(i, 1));
+                    calSum = 0;
+                    dotCount = 0;
+                    checkdot = false;
+                    break;
+                case '.':
+                    checkdot = true;
+                    break;
+                default:
+                    if ($('input').val().substr(i, 1) >= '0' && $('input').val().substr(i, 1) <= '9') {
+                        if (!checkdot)
+                            calSum = calSum * 10 + parseInt($('input').val().substr(i, 1));
+                        else
+                            calSum += parseFloat($('input').val().substr(i, 1)) * (Math.pow(0.1, ++dotCount) * 10000) / 10000;
+
+                        break;
+                    };
+            };
+        };
+        arr.push(calSum);
+        arr.push(opertor);
+    };
+
+    function cal() {
+        switch (arr[2]) {
+            case '+':
+                $('input').val((arr[0] * 10000 + arr[1] * 10000) / 10000);
+                break;
+            case '-':
+                $('input').val((arr[0] * 10000 - arr[1] * 10000) / 10000);
+                break;
+            case '*':
+                $('input').val((arr[0] * 10000 * arr[1]) / 10000);
+                break;
+            case '/':
+                if (arr[0] % arr[1] < 1)
+                    $('input').val((arr[0] / arr[1]));
+                else
+                    $('input').val((arr[0] / arr[1]).toFixed(3));
+                break;
+        };
+    };
+
+    $('button[name="num"]').click(function() {
+        addCalLength();
+        if (calLength < 15) {
+            switch ($(this).attr('value')) {
+                case '.':
+                    if (!checkdot || count === 0) {
+                        if ($('input').val().substr(calLength - 1, 1) >= 0 && $('input').val().substr(calLength - 1, 1) <= 9) {
+                            $('input').val($('input').val() + $(this).attr('value'));
+                            count++;
+                            checkdot = true;
+                            checkoperator = false;
+                        } else {
+                            $('input').val($('input').val() + '0' + $(this).attr('value'));
+                            count++;
+                            checkdot = true;
+                        }
+                    }
+                    break;
+                case '0':
+                    if ($('input').val().substr(0, 1) === '0' && calLength === 1) {
+                        $('input').val($(this).attr('value'))
+                        alert("不能連續輸入0");
+                    } else {
+                        if (($('input').val().substr(calLength - 1, 1) === '0') && checkoperator) {
+                            $('input').val($('input').val().substring(0, --calLength));
+                            $('input').val($('input').val() + $(this).attr('value'));
+                            alert("不能連續輸入0");
+                        } else {
+                            $('input').val($('input').val() + $(this).attr('value'));
+                        }
+                    }
+                    break;
+                default:
+                    if (calLength === 1 && count === 0 && ($(this).attr('value') >= '1' && $(this).attr('value') <= '9')) {
+                        $('input').val($(this).attr('value'));
+                        count++;
+                    } else {
+                        if (checkoperator && ($('input').val().substr(calLength - 1, 1) === '0')) {
+                            $('input').val($('input').val().substring(0, --calLength));
+                            $('input').val($('input').val() + $(this).attr('value'));
+                            checkoperator = false;
+                        } else {
+                            $('input').val($('input').val() + $(this).attr('value'));
+                        }
+                    }
+                    break;
+            };
+        } else {
+            alert('計算機內不得超過15字元');
+        }
+    });
+
+    $('button[name="clear"]').click(function() {
+        count = 0;
+        calLength = 1;
+        checkdot = false;
+        checkoperator = false;
+        $('input').val("0");
+    });
+
+    $('button[name="back"]').click(function() {
+        if (calLength === 1)
+            $('input').val("0");
+        else
+            $('input').val($('input').val().substring(0, --calLength));
+    });
+
+    $('.operator').click(function() {
+        addCalLength();
+        calculator();
+        cal();
+        $('input').val($('input').val() + $(this).attr('value'));
+        checkdot = false;
+        checkoperator = true;
+    });
+
+    $('button[name="equal"]').click(function() {
+        addCalLength();
+        calculator();
+        cal();
+        checkdot = false;
+        checkoperator = false;
+    });
+</script>

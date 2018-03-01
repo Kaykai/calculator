@@ -1,0 +1,92 @@
+* {
+    margin: 0 auto;
+    font-size: 25px;
+}
+
+body {
+    background-color: gray;
+}
+
+#calculator {
+    top: 20px;
+    width: 500px;
+    height: 500px;
+    position: relative;
+    border-radius: .75rem;
+    background-color: greenyellow;
+}
+
+p {
+    margin-left: 45px;
+    font-size: 30px;
+    color: white;
+    font-weight: bolder;
+}
+
+td>button {
+    width: 100px;
+    height: 60px;
+}
+
+input {
+    text-align: right;
+    display: block;
+    font-size: 33px;
+    margin-left: 45px;
+}
+
+.btn-light {
+    color: #212529;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa
+}
+
+.btn-light:hover {
+    color: #212529;
+    background-color: #e2e6ea;
+    border-color: #dae0e5
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d
+}
+
+.btn-secondary:hover {
+    color: #fff;
+    background-color: #5a6268;
+    border-color: #545b62
+}
+
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
+}
+
+#changecolor {
+    top: 50px;
+    height: 28.8px;
+    width: 300px;
+    position: relative;
+    color: white;
+    background-color: black;
+    border-radius: .75rem;
+}
+
+#changecolor>form>input {
+    padding: 0 auto;
+    display: inline-block;
+}
